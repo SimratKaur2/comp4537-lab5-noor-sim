@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lab 5 Client</title>
+</head>
+
+<body>
+    <button id="insertBtn">Insert Data</button>
+    <br><br>
+    <textarea id="sqlQuery" placeholder="Enter SQL SELECT query"></textarea>
+    <button id="submitQuery">Submit Query</button>
+    <script>
+        document.getElementById('insertBtn').addEventListener('click', function () {
+            // fetch('http://yourserver2domain/insert', {
+            fetch('http://localhost:3000/insert', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: 'simrat ', age: 20 }) // Example data
+            })
+                .then(response => response.text())
+                .then(data => alert(data))
+                .catch(error => console.error('Error:', error));
+        });
+
+        document.getElementById('submitQuery').addEventListener('click', function () {
+            const query = document.getElementById('sqlQuery').value;
+            if (query.toLowerCase().startsWith('select')) {
+                // fetch(`http://yourserver2domain/select?query=${encodeURIComponent(query)}`, {
+                fetch(`http://localhost:3000/select?query=${encodeURIComponent(query)}`, {
+
+                    method: 'GET'
+                })
+                    .then(response => response.json())
+                    .then(data => console.log(data))
+                    .catch(error => console.error('Error:', error));
+            } else {
+                alert('Only SELECT queries are allowed.');
+            }
+        });
+    </script>
+</body>
+
+</html>
