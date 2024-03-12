@@ -12,9 +12,10 @@
     <textarea id="sqlQuery" placeholder="Enter SQL SELECT query"></textarea>
     <button id="submitQuery">Submit Query</button>
     <script>
+        const serverURL = 'https://comp4537-lab5-noor-sim.onrender.com';
+
         document.getElementById('insertBtn').addEventListener('click', function () {
-            // fetch('http://yourserver2domain/insert', {
-            fetch('http://localhost:3000/insert', {
+            fetch('${serverURL}/insert', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name: 'simrat ', age: 20 }) // Example data
@@ -27,9 +28,7 @@
         document.getElementById('submitQuery').addEventListener('click', function () {
             const query = document.getElementById('sqlQuery').value;
             if (query.toLowerCase().startsWith('select')) {
-                // fetch(`http://yourserver2domain/select?query=${encodeURIComponent(query)}`, {
-                fetch(`http://localhost:3000/select?query=${encodeURIComponent(query)}`, {
-
+                fetch(`${serverURL}/select?query=${encodeURIComponent(query)}`, {
                     method: 'GET'
                 })
                     .then(response => response.json())
