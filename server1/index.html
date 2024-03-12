@@ -15,7 +15,7 @@
         const serverURL = 'https://comp4537-lab5-noor-sim.onrender.com';
 
         document.getElementById('insertBtn').addEventListener('click', function () {
-            fetch('${serverURL}/insert', {
+            fetch(`${serverURL}/insert`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name: 'simrat ', age: 20 }) // Example data
