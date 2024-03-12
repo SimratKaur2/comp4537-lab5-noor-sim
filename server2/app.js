@@ -2,12 +2,21 @@ const http = require("http");
 const mysql = require("mysql");
 const url = require("url");
 
+// Local Database connection
+// const db = mysql.createConnection({
+//   host: "localhost",
+//   user: "root",
+//   password: "mysql123",
+//   database: "lab5",
+// });
+
 // Database connection
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "mysql123",
-  database: "lab5",
+  host: 'mysql-7d1q', // This is the internal hostname from your Render's dashboard
+  port: 3306,        // This is the standard MySQL port
+  user: process.env.MYSQL_USER,     // Your MySQL username from the environment variable
+  password: process.env.MYSQL_PASSWORD, // Your MySQL user password from the environment variable
+  database: process.env.MYSQL_DATABASE, // Your MySQL database name from the environment variable
 });
 
 db.connect((err) => {
