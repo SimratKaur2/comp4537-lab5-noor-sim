@@ -35,6 +35,24 @@ db.connect((err) => {
     console.log("Table created or already exists");
   });
 });
+//test
+function ensurePatientsTableExists(callback) {
+  const createTableSQL = `
+    CREATE TABLE IF NOT EXISTS patients (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(100) NOT NULL,
+      dateOfBirth DATETIME NOT NULL
+    ) ENGINE=InnoDB;`;
+
+  db.query(createTableSQL, (err) => {
+    if (err) {
+      console.error('Error ensuring patients table exists:', err);
+      return callback(err);
+    }
+    console.log('Patients table checked or created');
+    callback(null); // null error indicates success
+  });
+}
 
 const server = http.createServer((req, res) => {
   // CORS headers
@@ -56,7 +74,7 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  const { pathname } = url.parse(req.url, true);
+  const { pathname, query } = url.parse(req.url, true);
 
   if (pathname === "/insert" && req.method === "POST") {
     createTableIfNeeded((err) => {
