@@ -46,10 +46,10 @@ function ensurePatientsTableExists(callback) {
 
   db.query(createTableSQL, (err) => {
     if (err) {
-      console.error('Error ensuring patients table exists:', err);
+      console.error("Error ensuring patients table exists:", err);
       return callback(err);
     }
-    console.log('Patients table checked or created');
+    console.log("Patients table checked or created");
     callback(null); // null error indicates success
   });
 }
@@ -114,7 +114,12 @@ const server = http.createServer((req, res) => {
         return;
       }
 
-      const sql = "SELECT * FROM patients";
+      // const sql = "SELECT * FROM patients";
+      const sql =
+        query.startsWithS === "true"
+          ? "SELECT * FROM patients WHERE name LIKE 'S%'"
+          : "SELECT * FROM patients";
+
       db.query(sql, (err, result) => {
         if (err) {
           res.writeHead(500);
