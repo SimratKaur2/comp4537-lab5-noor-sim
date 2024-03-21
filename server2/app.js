@@ -34,6 +34,24 @@ db.connect((err) => {
     console.log("Table created or already exists");
   });
 });
+//test
+function ensurePatientsTableExists(callback) {
+  const createTableSQL = `
+    CREATE TABLE IF NOT EXISTS patients (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(100) NOT NULL,
+      dateOfBirth DATETIME NOT NULL
+    ) ENGINE=InnoDB;`;
+
+  db.query(createTableSQL, (err) => {
+    if (err) {
+      console.error('Error ensuring patients table exists:', err);
+      return callback(err);
+    }
+    console.log('Patients table checked or created');
+    callback(null); // null error indicates success
+  });
+}
 
 const server = http.createServer((req, res) => {
   //Adding CORS headers here
@@ -57,9 +75,14 @@ const server = http.createServer((req, res) => {
     res.end();
     return;
   }
-
+//test
   const { pathname, query } = url.parse(req.url, true);
-
+  ensurePatientsTableExists((err) => {
+    if (err) {
+      res.writeHead(500);
+      res.end("Server error: Unable to ensure table existence");
+      return;
+    }
   if (pathname === "/insert" && req.method === "POST") {
     // Insert data logic
     let body = "";
